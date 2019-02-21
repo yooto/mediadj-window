@@ -36,8 +36,13 @@
 
       // aはqでオン、aでオフ・bはwでオン、sでオフ
       let controlDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
-
+      
       let loopCheckDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
+
+      let soundLimitState = 0;
+      let congestionCount = 0;
+      let invertState = 0;
+
       let polySynthA = new p5.PolySynth();
       let polySynthC = new p5.PolySynth();
       let polySynthD = new p5.PolySynth();
@@ -110,9 +115,27 @@
         }else if(modeState === 1){
           noStroke();
           background(0);
+
+          //A
           if(controlDic.a === 1){
+            if(frameCount % 120 === 0){
+              congestionCount = 0;
+            }
+            if(stateArray[0]-pastStateArray[0] >= 1
+            || stateArray[1]-pastStateArray[1] >= 1
+            || stateArray[2]-pastStateArray[2] >= 1
+            || stateArray[3]-pastStateArray[3] >= 1){
+              if (congestionCount < 5){
+                playSynth();
+              }else{
+                if (random(int(congestionCount)) < 5){
+                  playSynth();
+                }
+              }
+              congestionCount += 1;
+            }
+
             if(stateArray[0]-pastStateArray[0] >= 1){
-              playSynth();
               fill(255);
             }else{
               fill(0);
@@ -120,7 +143,6 @@
             rect(0, 0, width, height/4);
 
             if(stateArray[1]-pastStateArray[1] >= 1){
-              playSynth();
               fill(255);
             }else{
               fill(0);
@@ -128,7 +150,6 @@
             rect(0, height/4, width, height/4);
 
             if(stateArray[2]-pastStateArray[2] >= 1){
-              playSynth();
               fill(255);
             }else{
               fill(0);
@@ -136,7 +157,6 @@
             rect(0, height/2, width, height/4);
 
             if(stateArray[3]-pastStateArray[3] >= 1){
-              playSynth();
               fill(255);
             }else{
               fill(0);
@@ -152,13 +172,20 @@
             }
             loopCheckDic.b = rectX;
 
-            fill(stateArray[0] * 6 % 100, 0, 120);
+            let bri;
+            if(invertState === 1){
+              bri = 0;
+            }else if(invertState === 0){
+              bri = 120;
+            }
+
+            fill(stateArray[0] * 6 % 100, 0, bri);
             rect(rectX - stateArray[0] * width / 10 % width, 0, stateArray[0] * width / 10 % width, height/4);
-            fill(stateArray[1] * 6 % 100, 0, 120);
+            fill(stateArray[1] * 6 % 100, 0, bri);
             rect(rectX - stateArray[1] * width / 10 % width, height/4, stateArray[1] * width / 10 % width, height/4);
-            fill(stateArray[2] * 6 % 100, 0, 120);
+            fill(stateArray[2] * 6 % 100, 0, bri);
             rect(rectX - stateArray[2] * width / 10 % width, height/2, stateArray[2] * width / 10 % width, height/4);
-            fill(stateArray[3] * 6 % 100, 0, 120);
+            fill(stateArray[3] * 6 % 100, 0, bri);
             rect(rectX - stateArray[3] * width / 10 % width, height*3/4, stateArray[3] * width / 10 % width, height/4);
           }
 
@@ -172,6 +199,13 @@
 
             loopCheckDic.c = rectX;
 
+            let bri;
+            if(invertState === 1){
+              bri = [120, 100, 80, 60, 40];
+            }else if(invertState === 0){
+              bri = [0, 20, 40, 60, 80];
+            }
+
             function cDisplay(b) {
               fill(stateArray[0] * 6 % 100, 0, b);
               rect(rectX -  stateArray[0] * width / 10 % width / 15, 0, stateArray[0] * width / 10 % width / 15, height/4);
@@ -183,15 +217,15 @@
               rect(rectX - stateArray[3] * width / 10 % width / 15, height*3/4, stateArray[3] * width / 10 % width / 15, height/4);
             }
             rectX = width - (frameCount + width / 5) * 10 % width;
-            cDisplay(80);
+            cDisplay(bri[4]);
             rectX = width - (frameCount + width / 5) * 2 * 10 % width;
-            cDisplay(60);
+            cDisplay(bri[3]);
             rectX = width - (frameCount + width / 5) * 3 * 10 % width;
-            cDisplay(40);
+            cDisplay(bri[2]);
             rectX = width - (frameCount + width / 5) * 4 * 10 % width;
-            cDisplay(20);
+            cDisplay(bri[1]);
             rectX = width - (frameCount + width / 5) * 5 * 10 % width;
-            cDisplay(0);
+            cDisplay(bri[0]);
           }
 
           if(controlDic.d === 1){
@@ -205,6 +239,13 @@
 
             loopCheckDic.d = rectX;
 
+            let bri;
+            if(invertState === 1){
+              bri = [120, 110, 100, 90, 80];
+            }else if(invertState === 0){
+              bri = [0, 10, 20, 30, 40];
+            }
+
             function cDisplay(b) {
               fill(stateArray[0] * 6 % 100, 17, b);
               rect(rectX, 0, stateArray[0] * width / 10 % width / 15, height/4);
@@ -216,15 +257,15 @@
               rect(rectX, height*3/4, stateArray[3] * width / 10 % width / 15, height/4);
             }
             rectX = (frameCount + width / 4) * 10 % width;
-            cDisplay(40);
+            cDisplay(bri[4]);
             rectX = (frameCount + width / 3) * 2 * 10 % width;
-            cDisplay(30);
+            cDisplay(bri[3]);
             rectX = (frameCount + width / 6) * 3 * 10 % width;
-            cDisplay(20);
+            cDisplay(bri[2]);
             rectX = (frameCount + width / 3) * 4 * 10 % width;
-            cDisplay(10);
+            cDisplay(bri[1]);
             rectX = (frameCount + width / 4) * 5 * 10 % width;
-            cDisplay(0);
+            cDisplay(bri[0]);
           }
 
           if(controlDic.e === 1){
@@ -242,9 +283,17 @@
             if(rectY < loopCheckDic.f){
               playSynthF(width * 2 / 40 / 60);
             }
+
+            let bri;
+            if(invertState === 1){
+              bri = 0;
+            }else if(invertState === 0){
+              bri = 120;
+            }
+
             loopCheckDic.f = rectY;
 
-            fill(0, 63);
+            fill(bri, 63);
             rect(0, rectY, width, height / 3);
           }
 
@@ -258,13 +307,20 @@
 
             loopCheckDic.g = rectX;
 
-            fill(stateArray[0] * 6 % 100, 0, 0);
+            let bri;
+            if(invertState === 1){
+              bri = 120;
+            }else if(invertState === 0){
+              bri = 0;
+            }
+
+            fill(stateArray[0] * 6 % 100, 0, bri);
             rect(rectX - stateArray[0] * width / 10 % width / 2, 0, stateArray[0] * width / 10 % width / 2, height/4);
-            fill(stateArray[1] * 6 % 100, 0, 0);
+            fill(stateArray[1] * 6 % 100, 0, bri);
             rect(rectX - stateArray[1] * width / 10 % width / 2, height/4, stateArray[1] * width / 10 % width / 2, height/4);
-            fill(stateArray[2] * 6 % 100, 0, 0);
+            fill(stateArray[2] * 6 % 100, 0, bri);
             rect(rectX - stateArray[2] * width / 10 % width / 2, height/2, stateArray[2] * width / 10 % width / 2, height/4);
-            fill(stateArray[3] * 6 % 100, 0, 0);
+            fill(stateArray[3] * 6 % 100, 0, bri);
             rect(rectX - stateArray[3] * width / 10 % width / 2, height*3/4, stateArray[3] * width / 10 % width / 2, height/4);
           }
 
@@ -308,7 +364,16 @@
           sendReset();
         }
 
-        //controlDicについて
+        if(key === "z"){
+          soundLimitState = 1;
+        }else if(key === "x"){
+          soundLimitState = 0;
+        }else if(key === "c"){
+          invertState = 1;
+        }else if(key === "v"){
+          invertState = 0;
+        }
+
         if(key === "q"){
           controlDic.a = 1;
         }else if(key === "a"){
