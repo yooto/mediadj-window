@@ -84,7 +84,6 @@
 
 
       function draw(){
-        console.log(clientControlDic);
         colorMode(RGB, 256);
         if(modeState === 0){
           background(255);
@@ -313,6 +312,7 @@
           sendDic();
           noStroke();
           background(0);
+          
           //A
           if(controlDic.a === 1){
             if(frameCount % 180 === 0){
