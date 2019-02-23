@@ -4,11 +4,13 @@ var fs = require('fs');
 
 // 送受信された記録を管理する変数
 let stateArray = [0,0,0,0];
+let controlDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
 
 
 var server = http.createServer(function(req, res){
     // 現在のデータの状態を送信する
     io.sockets.emit('server_to_client', stateArray);
+    io.sockets.emit('server_to_client_Dic', controlDic);
 
     res.writeHead(200, {'Content-Type' : 'text/html'});
     res.end(fs.readFileSync('index.html', 'utf-8'));
@@ -32,8 +34,11 @@ io.sockets.on('connection', function(socket){
             stateArray[1] = 0;
             stateArray[2] = 0;
             stateArray[3] = 0;
+        }else{
+            controlDic = data;
         }
 
         io.sockets.emit('server_to_client', stateArray);
+        io.sockets.emit('server_to_client_Dic', controlDic);
     });
 });

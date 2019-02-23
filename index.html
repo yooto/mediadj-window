@@ -36,8 +36,10 @@
 
       // aはqでオン、aでオフ・bはwでオン、sでオフ
       let controlDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
+      let clientControlDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
       
       let loopCheckDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
+      let clientLoopCheckDic = {a : 0, b : 0, c : 0, d : 0, e : 0, f : 0, g : 0}
 
       let soundLimitState = 0;
       let congestionCount = 0;
@@ -50,6 +52,9 @@
       let polySynthF = new p5.PolySynth();
       let polySynthG = new p5.PolySynth();
 
+      let polySynthBaseA = new p5.PolySynth();
+      let polySynthBaseB = new p5.PolySynth();
+      let polySynthBaseC = new p5.PolySynth();
 
       let touchState = 0;
 
@@ -79,9 +84,11 @@
 
 
       function draw(){
+        console.log(clientControlDic);
         colorMode(RGB, 256);
         if(modeState === 0){
           background(255);
+
           stroke(0);
           strokeWeight(3);
           if(touchState === 1){
@@ -89,30 +96,228 @@
           }else{
             fill(255);
           }
-          rect(areaDic.top.x, areaDic.top.y, areaDic.top.w, areaDic.top.h);
+          rect(areaDic.top.x, areaDic.top.y, areaDic.top.w, height/4);
 
           if(touchState === 2){
             fill(180);
           }else{
             fill(255);
           }
-          rect(areaDic.second.x, areaDic.second.y, areaDic.second.w, areaDic.second.h);
+          rect(areaDic.second.x, areaDic.second.y, areaDic.second.w, height/4);
 
           if(touchState === 3){
             fill(180);
           }else{
             fill(255);
           }
-          rect(areaDic.third.x, areaDic.third.y, areaDic.third.w, areaDic.third.h);
+          rect(areaDic.third.x, areaDic.third.y, areaDic.third.w, height/4);
 
           if(touchState === 4){
             fill(180);
           }else{
             fill(255);
           }
-          rect(areaDic.bottom.x, areaDic.bottom.y, areaDic.bottom.w, areaDic.bottom.h);
+          rect(areaDic.bottom.x, areaDic.bottom.y, areaDic.bottom.w, height/4);
+
+//連動グラフィックここから
+
+          if(clientControlDic.a === 1){
+            if(stateArray[0]-pastStateArray[0] >= 1){
+              fill(255);
+            }else{
+              noFill();
+            }
+            rect(0, 0, width, height/4);
+
+            if(stateArray[1]-pastStateArray[1] >= 1){
+              fill(255);
+            }else{
+              noFill();
+            }
+            rect(0, height/4, width, height/4);
+
+            if(stateArray[2]-pastStateArray[2] >= 1){
+              fill(255);
+            }else{
+              noFill();
+            }
+            rect(0, height/2, width, height/4);
+
+            if(stateArray[3]-pastStateArray[3] >= 1){
+              fill(255);
+            }else{
+              noFill();
+            }
+            rect(0, height*3/4, width, height/4);
+          }
+
+          if(clientControlDic.b === 1){
+            colorMode(HSB, 120);
+            let rectX = frameCount * 15 % width * 2;
+
+            clientLoopCheckDic.b = rectX;
+
+            let bri;
+            if(invertState === 1){
+              bri = 0;
+            }else if(invertState === 0){
+              bri = 120;
+            }
+
+            fill(stateArray[0] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[0] * width / 10 % width, 0, stateArray[0] * width / 10 % width, height/4);
+            fill(stateArray[1] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[1] * width / 10 % width, height/4, stateArray[1] * width / 10 % width, height/4);
+            fill(stateArray[2] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[2] * width / 10 % width, height/2, stateArray[2] * width / 10 % width, height/4);
+            fill(stateArray[3] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[3] * width / 10 % width, height*3/4, stateArray[3] * width / 10 % width, height/4);
+          }
+
+          if(clientControlDic.c === 1){
+            colorMode(HSB, 120);
+            let rectX = frameCount * 10 % width;
+            
+            clientLoopCheckDic.c = rectX;
+
+            let bri;
+            if(invertState === 1){
+              bri = [120, 100, 80, 60, 40];
+            }else if(invertState === 0){
+              bri = [0, 20, 40, 60, 80];
+            }
+
+            function cDisplay(b) {
+              fill(stateArray[0] * 6 % 100, 0, b);
+              rect(rectX -  stateArray[0] * width / 10 % width / 15, 0, stateArray[0] * width / 10 % width / 15, height/4);
+              fill(stateArray[1] * 6 % 100, 0, b);
+              rect(rectX - stateArray[1] * width / 10 % width / 15, height/4, stateArray[1] * width / 10 % width / 15, height/4);
+              fill(stateArray[2] * 6 % 100, 0, b);
+              rect(rectX - stateArray[2] * width / 10 % width / 15, height/2, stateArray[2] * width / 10 % width / 15, height/4);
+              fill(stateArray[3] * 6 % 100, 0, b);
+              rect(rectX - stateArray[3] * width / 10 % width / 15, height*3/4, stateArray[3] * width / 10 % width / 15, height/4);
+            }
+            rectX = width - (frameCount + width / 5) * 10 % width;
+            cDisplay(bri[4]);
+            rectX = width - (frameCount + width / 5) * 2 * 10 % width;
+            cDisplay(bri[3]);
+            rectX = width - (frameCount + width / 5) * 3 * 10 % width;
+            cDisplay(bri[2]);
+            rectX = width - (frameCount + width / 5) * 4 * 10 % width;
+            cDisplay(bri[1]);
+            rectX = width - (frameCount + width / 5) * 5 * 10 % width;
+            cDisplay(bri[0]);
+          }
+
+          if(clientControlDic.d === 1){
+            colorMode(HSB, 120);
+            let rectX = (frameCount + width / 4) * 10 % width;
+
+            clientLoopCheckDic.d = rectX;
+
+            let bri;
+            if(invertState === 1){
+              bri = [120, 110, 100, 90, 80];
+            }else if(invertState === 0){
+              bri = [0, 10, 20, 30, 40];
+            }
+
+            function cDisplay(b) {
+              fill(stateArray[0] * 6 % 100, 17, b);
+              rect(rectX, 0, stateArray[0] * width / 10 % width / 15, height/4);
+              fill(stateArray[1] * 6 % 100, 17, b);
+              rect(rectX , height/4, stateArray[1] * width / 10 % width / 15, height/4);
+              fill(stateArray[2] * 6 % 100, 17, b);
+              rect(rectX , height/2, stateArray[2] * width / 10 % width / 15, height/4);
+              fill(stateArray[3] * 6 % 100, 17, b);
+              rect(rectX, height*3/4, stateArray[3] * width / 10 % width / 15, height/4);
+            }
+            rectX = (frameCount + width / 4) * 10 % width;
+            cDisplay(bri[4]);
+            rectX = (frameCount + width / 3) * 2 * 10 % width;
+            cDisplay(bri[3]);
+            rectX = (frameCount + width / 6) * 3 * 10 % width;
+            cDisplay(bri[2]);
+            rectX = (frameCount + width / 3) * 4 * 10 % width;
+            cDisplay(bri[1]);
+            rectX = (frameCount + width / 4) * 5 * 10 % width;
+            cDisplay(bri[0]);
+          }
+
+          if(clientControlDic.e === 1){
+            let rectY = height - frameCount * 50 % height * 2;
+
+            clientLoopCheckDic.e = rectY;
+
+            noStroke();
+            fill(0);
+
+            rect(0, rectY, stateArray[0] * width / 10 % width / 4, 3);
+
+            rect(width / 4, rectY, stateArray[1] * width / 10 % width / 4, 3);
+
+            rect(width / 2, rectY, stateArray[2] * width / 10 % width / 4, 3);
+
+            rect(width * 3 /4 , rectY, stateArray[3] * width / 10 % width / 4, 3);
+          }
+          
+          if(clientControlDic.f === 1){
+            let rectY = height - frameCount * 40 % height * 2;
+
+            let bri;
+            if(invertState === 1){
+              bri = 0;
+            }else if(invertState === 0){
+              bri = 120;
+            }
+
+            clientLoopCheckDic.f = rectY;
+
+            fill(bri, 63);
+            rect(0, rectY, width, height / 3);
+          }
+
+          if(clientControlDic.g === 1){
+            colorMode(HSB, 120);
+            let rectX = frameCount * 5 % width * 2;
+
+            clientLoopCheckDic.g = rectX;
+
+            let bri;
+            if(invertState === 1){
+              bri = 120;
+            }else if(invertState === 0){
+              bri = 0;
+            }
+
+            fill(stateArray[0] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[0] * width / 10 % width / 2, 0, stateArray[0] * width / 10 % width / 2, height/4);
+            fill(stateArray[1] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[1] * width / 10 % width / 2, height/4, stateArray[1] * width / 10 % width / 2, height/4);
+            fill(stateArray[2] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[2] * width / 10 % width / 2, height/2, stateArray[2] * width / 10 % width / 2, height/4);
+            fill(stateArray[3] * 6 % 100, 0, bri);
+            rect(rectX - stateArray[3] * width / 10 % width / 2, height*3/4, stateArray[3] * width / 10 % width / 2, height/4);
+          }
+
+          stroke(0);
+          strokeWeight(height/100 * 2);
+          line(0,0,width,0);
+
+          strokeWeight(height/100);
+          line(0,height/4,width,height/4);
+          line(0,height/2,width,height/2);
+          line(0,height*3/4,width,height*3/4);
+
+          strokeWeight(height/100 * 2);
+          line(0,height,width,height);
+          
+
+//連動グラフィックここまで
+
 
         }else if(modeState === 1){
+          sendDic();
           noStroke();
           background(0);
 
@@ -169,6 +374,7 @@
             let rectX = frameCount * 15 % width * 2;
             if(rectX < loopCheckDic.b){
               playSynthB(width * 2 / 15 / 60);
+              playSynthBaseA(width * 2 / 15 / 60);
             }
             loopCheckDic.b = rectX;
 
@@ -195,6 +401,7 @@
             if(rectX < loopCheckDic.c){
               let temp = width / 10 / 60;
               playSynthC(temp);
+              playSynthBaseB(temp);
             }
 
             loopCheckDic.c = rectX;
@@ -235,6 +442,7 @@
             if(rectX < loopCheckDic.d){
               let temp = width / 10 / 60;
               playSynthD(temp);
+              playSynthBaseC(temp);
             }
 
             loopCheckDic.d = rectX;
@@ -272,9 +480,20 @@
             let rectY = height - frameCount * 50 % height * 2;
             if(rectY < loopCheckDic.e){
               playSynthE(width * 2 / 50 / 60);
+              playSynthBaseA(width * 2 / 50 / 60);
             }
             loopCheckDic.e = rectY;
 
+            noStroke();
+            fill(0);
+
+            rect(0, rectY, stateArray[0] * width / 10 % width / 4, 3);
+
+            rect(width / 4, rectY, stateArray[1] * width / 10 % width / 4, 3);
+
+            rect(width / 2, rectY, stateArray[2] * width / 10 % width / 4, 3);
+
+            rect(width * 3 /4 , rectY, stateArray[3] * width / 10 % width / 4, 3);
           }
           
           if(controlDic.f === 1){
@@ -282,6 +501,8 @@
 
             if(rectY < loopCheckDic.f){
               playSynthF(width * 2 / 40 / 60);
+              playSynthBaseB(width * 2 / 40 / 60);
+
             }
 
             let bri;
@@ -303,6 +524,7 @@
 
             if(rectX < loopCheckDic.g){
               playSynthG(width * 2 / 5 / 60);
+              playSynthBaseC(width * 2 / 5 / 60);
             }
 
             loopCheckDic.g = rectX;
@@ -336,21 +558,6 @@
           strokeWeight(height/100 * 2);
           line(0,height,width,height);
         }
-        
-        if(controlDic.e === 1){
-          noStroke();
-          fill(0);
-          let rectY = height - frameCount * 50 % height * 2;
-
-          rect(0, rectY, stateArray[0] * width / 10 % width / 4, 3);
-
-          rect(width / 4, rectY, stateArray[1] * width / 10 % width / 4, 3);
-
-          rect(width / 2, rectY, stateArray[2] * width / 10 % width / 4, 3);
-
-          rect(width * 3 /4 , rectY, stateArray[3] * width / 10 % width / 4, 3);
-        }
-
         pastStateArray = stateArray;
       }
       function keyPressed(){
@@ -503,6 +710,36 @@
         polySynthG.setADSR(dur,dur,1,0);
         polySynthG.play("B3", v, time, dur);
       }
+      function playSynthBaseA(len){
+        // time from now (in seconds)
+        var time = 0;
+        // note duration (in seconds)
+        var dur = len/3;
+        // velocity (volume, from 0 to 1)
+        var v = 1;
+        polySynthBaseA.setADSR(dur,dur,1,0);
+        polySynthBaseA.play("C0", v, time, dur);
+      }
+      function playSynthBaseB(len){
+        // time from now (in seconds)
+        var time = 0;
+        // note duration (in seconds)
+        var dur = len/3;
+        // velocity (volume, from 0 to 1)
+        var v = 1;
+        polySynthBaseB.setADSR(dur,dur,1,0);
+        polySynthBaseB.play("Bb0", v, time, dur);
+      }
+      function playSynthBaseC(len){
+        // time from now (in seconds)
+        var time = 0;
+        // note duration (in seconds)
+        var dur = len/3;
+        // velocity (volume, from 0 to 1)
+        var v = 1;
+        polySynthBaseC.setADSR(dur,dur,1,0);
+        polySynthBaseC.play("E0", v, time, dur);
+      }
     </script>
 
     <!-- socketio -->
@@ -512,6 +749,10 @@
       socket.on("server_to_client", function(data){appendMsg(data)});
       function appendMsg(data) {
         stateArray = data;
+      }
+      socket.on("server_to_client_Dic", function(data){appendMsgDic(data)});
+      function appendMsgDic(data) {
+        clientControlDic = data;
       }
 
       function sendTop(){
@@ -529,6 +770,16 @@
       function sendReset(){
         socket.emit("client_to_server", "reset");
       }
+      function sendDic(){
+        socket.emit("client_to_server", controlDic);
+      }
+    </script>
+
+    <script>
+      //スマホの画面を回転させたら更新してcanvasを再生成
+      window.addEventListener("orientationchange", function() {
+        location.reload();
+      });
     </script>
 
   </body>
