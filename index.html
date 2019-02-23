@@ -210,38 +210,31 @@
           }
 
           if(clientControlDic.d === 1){
-            colorMode(HSB, 120);
+            colorMode(RGB, 255);
             let rectX = (frameCount + width / 4) * 10 % width;
 
             clientLoopCheckDic.d = rectX;
 
-            let bri;
-            if(invertState === 1){
-              bri = [120, 110, 100, 90, 80];
-            }else if(invertState === 0){
-              bri = [0, 10, 20, 30, 40];
-            }
-
-            function cDisplay(b) {
-              fill(stateArray[0] * 6 % 100, 17, b);
+            function cDisplay() {
+              fill(160, 220, 200);
               rect(rectX, 0, stateArray[0] * width / 10 % width / 15, height/4);
-              fill(stateArray[1] * 6 % 100, 17, b);
+              fill(150, 210, 200);
               rect(rectX , height/4, stateArray[1] * width / 10 % width / 15, height/4);
-              fill(stateArray[2] * 6 % 100, 17, b);
+              fill(140, 200, 200);
               rect(rectX , height/2, stateArray[2] * width / 10 % width / 15, height/4);
-              fill(stateArray[3] * 6 % 100, 17, b);
+              fill(130, 190, 200);
               rect(rectX, height*3/4, stateArray[3] * width / 10 % width / 15, height/4);
             }
             rectX = (frameCount + width / 4) * 10 % width;
-            cDisplay(bri[4]);
+            cDisplay();
             rectX = (frameCount + width / 3) * 2 * 10 % width;
-            cDisplay(bri[3]);
+            cDisplay();
             rectX = (frameCount + width / 6) * 3 * 10 % width;
-            cDisplay(bri[2]);
+            cDisplay();
             rectX = (frameCount + width / 3) * 4 * 10 % width;
-            cDisplay(bri[1]);
+            cDisplay();
             rectX = (frameCount + width / 4) * 5 * 10 % width;
-            cDisplay(bri[0]);
+            cDisplay();
           }
 
           if(clientControlDic.e === 1){
@@ -320,7 +313,6 @@
           sendDic();
           noStroke();
           background(0);
-
           //A
           if(controlDic.a === 1){
             if(frameCount % 180 === 0){
@@ -436,7 +428,7 @@
           }
 
           if(controlDic.d === 1){
-            colorMode(HSB, 120);
+            colorMode(RGB, 256);
             let rectX = (frameCount + width / 4) * 10 % width;
 
             if(rectX < loopCheckDic.d){
@@ -447,33 +439,26 @@
 
             loopCheckDic.d = rectX;
 
-            let bri;
-            if(invertState === 1){
-              bri = [120, 110, 100, 90, 80];
-            }else if(invertState === 0){
-              bri = [0, 10, 20, 30, 40];
-            }
-
-            function cDisplay(b) {
-              fill(stateArray[0] * 6 % 100, 17, b);
+            function cDisplay() {
+              fill(160, 220, 200);
               rect(rectX, 0, stateArray[0] * width / 10 % width / 15, height/4);
-              fill(stateArray[1] * 6 % 100, 17, b);
+              fill(150, 210, 200);
               rect(rectX , height/4, stateArray[1] * width / 10 % width / 15, height/4);
-              fill(stateArray[2] * 6 % 100, 17, b);
+              fill(140, 200, 200);
               rect(rectX , height/2, stateArray[2] * width / 10 % width / 15, height/4);
-              fill(stateArray[3] * 6 % 100, 17, b);
+              fill(130, 190, 200);
               rect(rectX, height*3/4, stateArray[3] * width / 10 % width / 15, height/4);
             }
             rectX = (frameCount + width / 4) * 10 % width;
-            cDisplay(bri[4]);
+            cDisplay();
             rectX = (frameCount + width / 3) * 2 * 10 % width;
-            cDisplay(bri[3]);
+            cDisplay();
             rectX = (frameCount + width / 6) * 3 * 10 % width;
-            cDisplay(bri[2]);
+            cDisplay();
             rectX = (frameCount + width / 3) * 4 * 10 % width;
-            cDisplay(bri[1]);
+            cDisplay();
             rectX = (frameCount + width / 4) * 5 * 10 % width;
-            cDisplay(bri[0]);
+            cDisplay();
           }
 
           if(controlDic.e === 1){
