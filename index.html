@@ -682,7 +682,11 @@
         // velocity (volume, from 0 to 1)
         var v = 0.8;
         polySynthA.setADSR(0.002,0,1,0.002);
-        polySynthA.play("Eb8", v, time, dur);
+        if(backgroundState === 0){
+          polySynthA.play("E8", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynthA.play("A8", v, time, dur);
+        }
       }
       function playSynthB(len) {
         // time from now (in seconds)
@@ -692,7 +696,11 @@
         // velocity (volume, from 0 to 1)
         var v = 1;
         polySynth.setADSR(dur,dur,1,0);
-        polySynth.play("G2", v, time, dur);
+        if(backgroundState === 0){
+          polySynth.play("G2", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynth.play("C2", v, time, dur);
+        }
       }
       function playSynthC(len) {
         // time from now (in seconds)
@@ -702,7 +710,11 @@
         // velocity (volume, from 0 to 1)
         var v = 0.8;
         polySynthC.setADSR(dur,dur,1,0);
-        polySynthC.play("E3", v, time, dur);
+        if(backgroundState === 0){
+          polySynthC.play("E3", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynthC.play("A3", v, time, dur);
+        }
       }
       function playSynthD(len) {
         // time from now (in seconds)
@@ -712,7 +724,11 @@
         // velocity (volume, from 0 to 1)
         var v = 0.6;
         polySynthD.setADSR(dur,dur,1,0);
-        polySynthD.play("C4", v, time, dur);
+        if(backgroundState === 0){
+          polySynthD.play("C4", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynthD.play("F4", v, time, dur);
+        }
       }
       function playSynthE(len) {
         // time from now (in seconds)
@@ -722,7 +738,11 @@
         // velocity (volume, from 0 to 1)
         var v = 0.8;
         polySynthE.setADSR(dur,dur,1,dur);
-        polySynthE.play("Bb3", v, time, dur);
+        if(backgroundState === 0){
+          polySynthE.play("Bb3", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynthE.play("Eb3", v, time, dur);
+        }
       }
       function playSynthF(len) {
         // time from now (in seconds)
@@ -732,7 +752,11 @@
         // velocity (volume, from 0 to 1)
         var v = 1;
         polySynthF.setADSR(dur,dur,1,0);
-        polySynthF.play("Bb3", v, time, dur);
+        if(backgroundState === 0){
+          polySynthF.play("Bb3", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynthF.play("Eb3", v, time, dur);
+        }
       }
       function playSynthG(len) {
         // time from now (in seconds)
@@ -742,7 +766,11 @@
         // velocity (volume, from 0 to 1)
         var v = 0.6;
         polySynthG.setADSR(dur,dur,1,0);
-        polySynthG.play("B3", v, time, dur);
+        if(backgroundState === 0){
+          polySynthG.play("B3", v, time, dur);
+        }else if(backgroundState === 1){
+          polySynthG.play("E3", v, time, dur);
+        }
       }
     </script>
 
